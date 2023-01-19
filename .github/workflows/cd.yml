@@ -27,6 +27,10 @@ jobs:
             echo "$file was changed"
           done
 
+       - uses: technote-space/get-diff-action@v6
+        with:
+          CHECK_ONLY_COMMIT_WHEN_DRAFT: true
+
       - name: Run ansible-lint
         # replace `main` with any valid ref, or tags like `v6`
         uses: ansible/ansible-lint-action@v6.10.2
