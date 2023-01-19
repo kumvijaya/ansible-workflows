@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 env:
   GIT_TEST_DEBUG_UNSAFE_DIRECTORIES: true
+  GET_FILE_DIFF: true
 
 jobs:
   build:
@@ -30,7 +31,6 @@ jobs:
       - uses: technote-space/get-diff-action@v6
         with:
           CHECK_ONLY_COMMIT_WHEN_DRAFT: true
-          GET_FILE_DIFF: true
 
       - name: Diff files
         run: |
