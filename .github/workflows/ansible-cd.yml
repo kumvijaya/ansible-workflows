@@ -23,7 +23,7 @@ jobs:
         run: |
           echo ${{ steps.changed-files.outputs.all_modified_files }}
 
-      - name: Show modified file diffs
+      - name: Show modified files diffs
         if: steps.changed-files.outputs.any_changed == 'true'
         run: git diff HEAD~1 -- . ':(exclude).github' ':(exclude)*.md'
 
