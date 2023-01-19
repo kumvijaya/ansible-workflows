@@ -23,9 +23,9 @@ jobs:
         run: |
           echo ${{ steps.changed-files.outputs.all_modified_files }}
 
-      - name: Show modified files diffs
+      - name: Show modified file diffs
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: git diff HEAD~1
+        run: git diff HEAD~1 -- . ':(exclude).github' ':(exclude)*.md'
 
       - name: Run ansible-lint
         if: steps.changed-files.outputs.any_changed == 'true'
