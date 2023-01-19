@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Setup global
         run: |
-        git config --global --add safe.directory /github/workspace
+          git config --global --add safe.directory /github/workspace
 
       - uses: actions/checkout@v3
 
