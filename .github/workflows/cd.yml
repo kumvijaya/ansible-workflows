@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - run: git log
-      - run: git diff
+      - run: git diff HEAD~2
 
       - name: Get changed files
         id: changed-files
