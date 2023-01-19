@@ -27,7 +27,7 @@ jobs:
             echo "$file was changed"
           done
 
-       - uses: technote-space/get-diff-action@v6
+      - uses: technote-space/get-diff-action@v6
         with:
           CHECK_ONLY_COMMIT_WHEN_DRAFT: true
 
