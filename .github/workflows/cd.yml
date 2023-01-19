@@ -3,7 +3,6 @@ on: [push, pull_request]
 
 env:
   GIT_TEST_DEBUG_UNSAFE_DIRECTORIES: true
-  GET_FILE_DIFF: true
 
 jobs:
   build:
@@ -15,8 +14,11 @@ jobs:
       #     git config --global --add safe.directory /github/workspace
 
       - uses: actions/checkout@v2
-        # with:
-        #   fetch-depth: 2  # OR "2" -> To retrieve the preceding commit.
+        with:
+          fetch-depth: 0
+
+      - run: git log
+      - run: git diff HEAD~10
 
       - name: Get changed files
         id: changed-files
@@ -28,13 +30,13 @@ jobs:
             echo "$file was changed"
           done
 
-      - uses: technote-space/get-diff-action@v6
-        with:
-          CHECK_ONLY_COMMIT_WHEN_DRAFT: true
+      # - uses: technote-space/get-diff-action@v6
+      #   with:
+      #     CHECK_ONLY_COMMIT_WHEN_DRAFT: true
 
-      - name: Diff files
-        run: |
-          git diff
+      # - name: Diff files
+      #   run: |
+      #     git diff
 
       - name: Run ansible-lint
         # replace `main` with any valid ref, or tags like `v6`
