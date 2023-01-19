@@ -1,0 +1,32 @@
+name: Ansible CD
+on: [push, pull_request]
+
+jobs:
+  ansible-cd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - id: changed-files
+        uses: tj-actions/changed-files@v35
+        with:
+          separator: "\n"
+          files: |
+            *.yaml
+            *.yml
+            !.github
+            !*.md
+
+      - name: Show modified files list
+        run: |
+          echo ${{ steps.changed-files.outputs.all_modified_files }}
+
+      - name: Show modified files diffs
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: git diff HEAD~1
+
+      - name: Run ansible-lint
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: ansible/ansible-lint-action@v6.10.2
