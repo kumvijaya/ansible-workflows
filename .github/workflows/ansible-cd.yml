@@ -63,6 +63,7 @@ jobs:
 
       - name: Ansible playbook
         run: |
+          ls -ltr
           ansible-playbook hello-world.yml --check
       # ansible all -i vyos.example.net, -c ansible.netcommon.network_cli -u my_vyos_user -k -m vyos.vyos.vyos_facts -e ansible_network_os=vyos.vyos.vyos
       # ansible-playbook ansible-hello.yml --check
