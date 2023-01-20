@@ -37,10 +37,15 @@ jobs:
       #     # Required, playbook filepath
       #     playbook: ansible-hello.yml
 
-      - uses: actions/setup-python@v4
+      - name: Install Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10' 
-      - run: |
+
+      - name: Install Ansible
+        run: |
           python3 -m pip install --user ansible
-      - run: |
+
+      - name: Check ansible version
+        run: |
           ansible --version
