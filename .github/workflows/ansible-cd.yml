@@ -30,3 +30,9 @@ jobs:
       - name: Run ansible-lint
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: ansible/ansible-lint-action@v6.10.2
+
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          # Required, playbook filepath
+          playbook: ansible-hello.yml
