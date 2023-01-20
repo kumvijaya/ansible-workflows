@@ -57,7 +57,7 @@ jobs:
 
       - name: Create vyos config
         run: |
-          ssh my_vyos_user@vyos.example.net
+          ssh -tt my_vyos_user@vyos.example.net
           show config
           exit
 
