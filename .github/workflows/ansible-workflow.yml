@@ -1,8 +1,8 @@
-name: Ansible CD
+name: Ansible Workflow
 on: [push, pull_request]
 
 jobs:
-  ansible-cd:
+  ansible-workflow:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,6 @@ jobs:
       - id: changed-files
         uses: tj-actions/changed-files@v35
         # with:
-        #   separator: ","
           # files: |
           #   *.yaml
           #   *.yml
@@ -50,5 +49,4 @@ jobs:
 
       - name: Run ansible dry-run
         run: |
-          ansible-galaxy collection install arista.eos
-          ansible-playbook deploy/arista.eos.eos_l3_interfaces.yml --check
+          ansible-playbook deploy/hello-world.yml --check
