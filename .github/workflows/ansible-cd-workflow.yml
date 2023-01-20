@@ -51,4 +51,4 @@ jobs:
       - name: Run ansible dry-run
         run: |
           ansible-galaxy collection install arista.eos
-          ansible-playbook deploy/hello-world.yml --check
+          ansible-playbook deploy/arista.eos.eos_l3_interfaces.yml --check
