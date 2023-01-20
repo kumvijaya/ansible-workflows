@@ -50,5 +50,5 @@ jobs:
 
       - name: Run ansible dry-run
         run: |
-          ls -ltr
+          ansible-galaxy collection install arista.eos
           ansible-playbook deploy/hello-world.yml --check
