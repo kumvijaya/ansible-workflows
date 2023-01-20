@@ -8,3 +8,12 @@
   - name: Print debug message
     debug:
       msg: Hai, Hello, world!
+      
+- name: PLAYBOOK - Arista Test
+  hosts: EOS
+
+  tasks:
+
+  - name: run show version on remote devices
+    arista.eos.eos_command:
+      commands: show version
