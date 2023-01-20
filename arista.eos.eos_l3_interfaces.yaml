@@ -1,231 +1,55 @@
-# Using deleted
-
-# Before state:
-# -------------
-#
-# veos#show running-config | section interface
-# interface Ethernet1
-#    ip address 192.0.2.12/24
-# !
-# interface Ethernet2
-#    ipv6 address 2001:db8::1/64
-# !
-# interface Management1
-#    ip address dhcp
-#    ipv6 address auto-config
-
 - name: Delete L3 attributes of given interfaces.
   arista.eos.eos_l3_interfaces:
     config:
-    - name: Ethernet1
-    - name: Ethernet2
+      - name: Ethernet1
+      - name: Ethernet2
     state: deleted
-
-# After state:
-# ------------
-#
-# veos#show running-config | section interface
-# interface Ethernet1
-# !
-# interface Ethernet2
-# !
-# interface Management1
-#    ip address dhcp
-#    ipv6 address auto-config
-
-
-# Using merged
-
-# Before state:
-# -------------
-#
-# veos#show running-config | section interface
-# interface Ethernet1
-#    ip address 192.0.2.12/24
-# !
-# interface Ethernet2
-#    ipv6 address 2001:db8::1/64
-# !
-# interface Management1
-#    ip address dhcp
-#    ipv6 address auto-config
-
 - name: Merge provided configuration with device configuration.
   arista.eos.eos_l3_interfaces:
     config:
-    - name: Ethernet1
-      ipv4:
-      - address: 198.51.100.14/24
-    - name: Ethernet2
-      ipv4:
-      - address: 203.0.113.27/24
+      - name: Ethernet1
+        ipv4:
+          - address: 198.51.100.14/24
+      - name: Ethernet2
+        ipv4:
+          - address: 203.0.113.27/24
     state: merged
-
-# After state:
-# ------------
-#
-# veos#show running-config | section interface
-# interface Ethernet1
-#    ip address 198.51.100.14/24
-# !
-# interface Ethernet2
-#    ip address 203.0.113.27/24
-#    ipv6 address 2001:db8::1/64
-# !
-# interface Management1
-#    ip address dhcp
-#    ipv6 address auto-config
-
-
-# Using overridden
-
-# Before state:
-# -------------
-#
-# veos#show running-config | section interface
-# interface Ethernet1
-#    ip address 192.0.2.12/24
-# !
-# interface Ethernet2
-#    ipv6 address 2001:db8::1/64
-# !
-# interface Management1
-#    ip address dhcp
-#    ipv6 address auto-config
-
-- name: Override device configuration of all L2 interfaces on device with provided
+- name: >-
+    Override device configuration of all L2 interfaces on device with provided
     configuration.
   arista.eos.eos_l3_interfaces:
     config:
-    - name: Ethernet1
-      ipv6:
-      - address: 2001:db8:feed::1/96
-    - name: Management1
-      ipv4:
-      - address: dhcp
+      - name: Ethernet1
+        ipv6:
+          - address: '2001:db8:feed::1/96'
+      - name: Management1
+        ipv4:
+          - address: dhcp
     ipv6: auto-config
     state: overridden
-
-# After state:
-# ------------
-#
-# veos#show running-config | section interface
-# interface Ethernet1
-#    ipv6 address 2001:db8:feed::1/96
-# !
-# interface Ethernet2
-# !
-# interface Management1
-#    ip address dhcp
-#    ipv6 address auto-config
-
-
-# Using replaced
-
-# Before state:
-# -------------
-#
-# veos#show running-config | section interface
-# interface Ethernet1
-#    ip address 192.0.2.12/24
-# !
-# interface Ethernet2
-#    ipv6 address 2001:db8::1/64
-# !
-# interface Management1
-#    ip address dhcp
-#    ipv6 address auto-config
-
-- name: Replace device configuration of specified L2 interfaces with provided configuration.
+- name: >-
+    Replace device configuration of specified L2 interfaces with provided
+    configuration.
   arista.eos.eos_l3_interfaces:
     config:
-    - name: Ethernet2
-      ipv4:
-      - address: 203.0.113.27/24
+      - name: Ethernet2
+        ipv4:
+          - address: 203.0.113.27/24
     state: replaced
-
-# After state:
-# ------------
-#
-# veos#show running-config | section interface
-# interface Ethernet1
-#    ip address 192.0.2.12/24
-# !
-# interface Ethernet2
-#    ip address 203.0.113.27/24
-# !
-# interface Management1
-#    ip address dhcp
-#    ipv6 address auto-config
-
-# Using parsed:
-
-# parsed.cfg
-# ------------
-#
-# veos#show running-config | section interface
-# interface Ethernet1
-#    ip address 198.51.100.14/24
-# !
-# interface Ethernet2
-#    ip address 203.0.113.27/24
-# !
-
 - name: Use parsed to convert native configs to structured data
   arista.eos.interfaces:
-    running_config: "{{ lookup('file', 'parsed.cfg') }}"
+    running_config: '{{ lookup(''file'', ''parsed.cfg'') }}'
     state: parsed
-
-# Output:
-
-# parsed:
-#    - name: Ethernet1
-#      ipv4:
-#        - address: 198.51.100.14/24
-#    - name: Ethernet2
-#      ipv4:
-#        - address: 203.0.113.27/24
-
-# Using rendered:
-
 - name: Use Rendered to convert the structured data to native config
   arista.eos.eos_l3_interfaces:
     config:
-    - name: Ethernet1
-      ipv4:
-      - address: 198.51.100.14/24
-    - name: Ethernet2
-      ipv4:
-      - address: 203.0.113.27/24
+      - name: Ethernet1
+        ipv4:
+          - address: 198.51.100.14/24
+      - name: Ethernet2
+        ipv4:
+          - address: 203.0.113.27/24
     state: rendered
-
-# Output
-# ------------
-#rendered:
-#   - "interface Ethernet1"
-#   - "ip address 198.51.100.14/24"
-#   - "interface Ethernet2"
-#   - "ip address 203.0.113.27/24"
-
-# using gathered:
-
-# Native COnfig:
-# veos#show running-config | section interface
-# interface Ethernet1
-#    ip address 198.51.100.14/24
-# !
-# interface Ethernet2
-#    ip address 203.0.113.27/24
-# !
-
 - name: Gather l3 interfaces facts from the device
   arista.eos.l3_interfaces:
     state: gathered
-
-#    gathered:
-#      - name: Ethernet1
-#        ipv4:
-#          - address: 198.51.100.14/24
-#      - name: Ethernet2
-#        ipv4:
-#          - address: 203.0.113.27/24
