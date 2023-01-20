@@ -51,4 +51,4 @@ jobs:
       - name: Run ansible dry-run
         run: |
           ls -ltr
-          ansible-playbook deploy/hello-world.yaml --check
+          ansible-playbook deploy/hello-world.yml --check
