@@ -46,7 +46,7 @@ jobs:
       - name: Install Ansible
         run: |
           python3 -m pip install ansible
-          python3 -m pip install paramiko pylibssh
+          python3 -m pip install ansible-pylibssh paramiko
 
       - name: Check ansible version
         run: |
