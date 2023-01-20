@@ -40,12 +40,12 @@ jobs:
           done
 
       - name: Show modified files diffs
-        if: steps.changed-files.outputs.any_modified == 'true'
+        #if: steps.changed-files.outputs.any_modified == 'true'
         run: git diff HEAD~1
         #-- . ':(exclude).github' ':(exclude)*.md'
 
       - name: Run ansible lint
-        if: steps.changed-files.outputs.any_modified == 'true'
+        #if: steps.changed-files.outputs.any_modified == 'true'
         uses: ansible/ansible-lint-action@v6.10.2
 
       - name: Run ansible dry-run
