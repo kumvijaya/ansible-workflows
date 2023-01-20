@@ -31,8 +31,15 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: ansible/ansible-lint-action@v6.10.2
 
-      - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@v2
+      # - name: Run playbook
+      #   uses: dawidd6/action-ansible-playbook@v2
+      #   with:
+      #     # Required, playbook filepath
+      #     playbook: ansible-hello.yml
+
+      - uses: actions/setup-python@v4
         with:
-          # Required, playbook filepath
-          playbook: ansible-hello.yml
+          python-version: '3.10' 
+      - run: |
+          python3 -m pip install --user ansible
+          ansible --version
