@@ -13,11 +13,11 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           separator: "\n"
-          files: |
-            *.yaml
-            *.yml
-            !.github
-            !*.md
+          # files: |
+          #   *.yaml
+          #   *.yml
+          #   !.github
+          #   !*.md
 
       - name: Show modified files list
         run: |
