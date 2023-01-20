@@ -42,4 +42,5 @@ jobs:
           python-version: '3.10' 
       - run: |
           python3 -m pip install --user ansible
+      - run: |
           ansible --version
