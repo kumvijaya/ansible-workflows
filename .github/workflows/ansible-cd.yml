@@ -21,7 +21,10 @@ jobs:
 
       - name: Show modified files list
         run: |
-          echo ${{ steps.changed-files.outputs.all_modified_files }}
+          echo "List of files changed"
+          for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
+            echo $file
+          done
 
       - name: Show modified files diffs
         if: steps.changed-files.outputs.any_changed == 'true'
