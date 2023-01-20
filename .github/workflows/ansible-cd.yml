@@ -6,7 +6,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+
+      - name: Install Ansible
+        run: |
+          python3 -m pip install ansible
+          python3 -m pip install ansible-pylibssh paramiko
+          ansible --version
+
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - id: changed-files
@@ -31,39 +43,11 @@ jobs:
         run: git diff HEAD~1
         #-- . ':(exclude).github' ':(exclude)*.md'
 
-      - name: Run ansible-lint
+      - name: Run ansible lint
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: ansible/ansible-lint-action@v6.10.2
 
-      # - name: Run playbook
-      #   uses: dawidd6/action-ansible-playbook@v2
-      #   with:
-      #     # Required, playbook filepath
-      #     playbook: ansible-hello.yml
-
-      - name: Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10' 
-
-      - name: Install Ansible
-        run: |
-          python3 -m pip install ansible
-          python3 -m pip install ansible-pylibssh paramiko
-
-      - name: Check ansible version
-        run: |
-          ansible --version
-
-      # - name: Create vyos config
-      #   run: |
-      #     ssh -tt my_vyos_user@vyos.example.net
-      #     show config
-      #     exit
-
-      - name: Ansible playbook
+      - name: Run ansible dry-run
         run: |
           ls -ltr
-          ansible-playbook hello-world.yaml --check
-      # ansible all -i vyos.example.net, -c ansible.netcommon.network_cli -u my_vyos_user -k -m vyos.vyos.vyos_facts -e ansible_network_os=vyos.vyos.vyos
-      # ansible-playbook ansible-hello.yml --check
+          ansible-playbook deploy/hello-world.yaml --check
