@@ -55,6 +55,12 @@ jobs:
         run: |
           ansible --version
 
+      - name: Create vyos config
+        run: |
+          ssh my_vyos_user@vyos.example.net
+          show config
+          exit
+
       - name: Ansible playbook
         run: |
           ansible all -i vyos.example.net, -c ansible.netcommon.network_cli -u my_vyos_user -k -m vyos.vyos.vyos_facts -e ansible_network_os=vyos.vyos.vyos
