@@ -50,4 +50,7 @@ jobs:
       - name: Check ansible version
         run: |
           ansible --version
-          ansible-playbook deploy/ansible-hello.yml --check
+
+      - name: Ansible dry-run
+        run: |
+          ansible-playbook ansible-hello.yml --check
