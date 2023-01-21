@@ -31,6 +31,7 @@ jobs:
             !*.md
 
       - name: Show changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           echo "Below yaml files are changed:"
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
