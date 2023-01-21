@@ -47,6 +47,10 @@ jobs:
         #if: steps.changed-files.outputs.any_modified == 'true'
         uses: ansible/ansible-lint-action@v6.10.2
 
+      - name: Copy hosts file
+        run: |
+          cp deploy/hosts /etc/ansible/hosts
+
       - name: Run ansible dry-run
         run: |
           ANSIBLE_STDOUT_CALLBACK=yaml ansible-playbook deploy/devnet.yml --check -v
