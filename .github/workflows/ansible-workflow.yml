@@ -48,6 +48,7 @@ jobs:
             ext="${file##*.}"
             if [ $ext == yml ] || [ $ext = yaml ]; then
               echo "Generating diff for $file"
+              git diff HEAD~1 $file
             fi
           done
 
