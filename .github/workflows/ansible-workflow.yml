@@ -34,7 +34,7 @@ jobs:
         run: |
           echo "List of yaml files changed"
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
-            if [ "$file" == "*.yml" ] || [ "$file" = "*.yaml" ] then
+            if [ "$file" == "*.yml" ] || [ "$file" = "*.yaml" ]; then
               echo $file
             fi
           done
@@ -57,7 +57,7 @@ jobs:
         if: steps.changed-files.outputs.any_modified == 'true'
         run: |
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
-            if [ "$file" == "*.yml" ] || [ "$file" = "*.yaml" ] then
+            if [ "$file" == "*.yml" ] || [ "$file" = "*.yaml" ]; then
               ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_STDOUT_CALLBACK=yaml ansible-playbook $file --check -v
             fi
             
