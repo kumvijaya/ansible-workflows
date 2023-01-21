@@ -36,8 +36,8 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
             ext="${file##*.}"
             echo $file
-            if [ "$ext" == "*.yml" ] || [ "$ext" = "*.yaml" ]; then
-              echo $file
+            if [ $ext == yml ] || [ $ext = yaml ]; then
+              echo filtered=$file
             fi
           done
 
@@ -59,7 +59,9 @@ jobs:
         if: steps.changed-files.outputs.any_modified == 'true'
         run: |
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
-            if [ "$file" == "*.yml" ] || [ "$file" = "*.yaml" ]; then
+            ext="${file##*.}"
+            echo $file
+            if [ $ext == yml ] || [ $ext = yaml ]; then
               ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_STDOUT_CALLBACK=yaml ansible-playbook $file --check -v
             fi
-            
+          done     
