@@ -22,6 +22,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          sudo mkdir /etc/ansible
+          sudo cp deploy/hosts /etc/ansible/hosts
+
       - id: changed-files
         uses: tj-actions/changed-files@v35
         with:
@@ -55,12 +60,6 @@ jobs:
       - name: Lint
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: ansible/ansible-lint-action@v6.10.2
-
-      - name: Copy hosts
-        if: steps.changed-files.outputs.any_changed == 'true'
-        run: |
-          sudo mkdir /etc/ansible
-          sudo cp deploy/hosts /etc/ansible/hosts
 
       - name: Dry-run
         if: steps.changed-files.outputs.any_changed == 'true'
