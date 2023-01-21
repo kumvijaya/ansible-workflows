@@ -48,11 +48,13 @@ jobs:
         uses: ansible/ansible-lint-action@v6.10.2
 
       - name: Copy hosts file
+        if: steps.changed-files.outputs.any_modified == 'true'
         run: |
           sudo mkdir /etc/ansible
           sudo cp deploy/hosts /etc/ansible/hosts
 
       - name: Run ansible dry-run
+        if: steps.changed-files.outputs.any_modified == 'true'
         run: |
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
             if [ "$file" == "*.yml" ] || [ "$file" = "*.yaml" ] then
