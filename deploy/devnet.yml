@@ -12,4 +12,4 @@
         config:
           - name: Loopback4
             description: L4 Configured by Ansible
-            state: merged
+        state: merged
