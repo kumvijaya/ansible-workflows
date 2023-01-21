@@ -40,7 +40,7 @@ jobs:
               echo $file
             fi
           done
-          
+
       - name: Show changed files diffs
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
@@ -48,7 +48,6 @@ jobs:
             ext="${file##*.}"
             if [ $ext == yml ] || [ $ext = yaml ]; then
               echo "Generating diff for $file"
-              git diff HEAD~1 $file'
             fi
           done
 
