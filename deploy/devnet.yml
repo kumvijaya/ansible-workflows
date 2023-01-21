@@ -1,7 +1,6 @@
 - name: THIS IS PLAYBOOK
-  hosts: 127.0.0.1
-  connection: local
-  
+  hosts: testhost
+
   tasks:
   - name: Add Banner
     cisco.ios.ios_banner: null
