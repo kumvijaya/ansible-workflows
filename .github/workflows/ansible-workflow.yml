@@ -30,38 +30,44 @@ jobs:
             !config/ansible-lint.yml
             !*.md
 
-      - name: Show modified files list
+      - name: Show changed files
         run: |
-          echo "List of yaml files changed"
-          for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
+          echo "Below yaml files are changed:"
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             ext="${file##*.}"
-            echo $file
             if [ $ext == yml ] || [ $ext = yaml ]; then
-              echo filtered=$file
+              echo $file
             fi
           done
 
-      - name: Show modified files diffs
-        if: steps.changed-files.outputs.any_modified == 'true'
-        run: git diff HEAD~1 -- . ':(exclude).github' ':(exclude)*.md'
+      - name: Show changed files diffs
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            ext="${file##*.}"
+            if [ $ext == yml ] || [ $ext = yaml ]; then
+              echo "Generating diff for $file"
+              git diff HEAD~1 $file'
+            fi
+          done
 
-      - name: Run ansible lint
-        if: steps.changed-files.outputs.any_modified == 'true'
+      - name: Lint
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: ansible/ansible-lint-action@v6.10.2
 
-      - name: Copy hosts file
-        if: steps.changed-files.outputs.any_modified == 'true'
+      - name: Copy hosts
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           sudo mkdir /etc/ansible
           sudo cp deploy/hosts /etc/ansible/hosts
 
-      - name: Run ansible dry-run
-        if: steps.changed-files.outputs.any_modified == 'true'
+      - name: Dry-run
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             ext="${file##*.}"
-            echo $file
             if [ $ext == yml ] || [ $ext = yaml ]; then
+              echo "Executing dry-run for $file"
               ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_STDOUT_CALLBACK=yaml ansible-playbook $file --check -v
             fi
           done     
