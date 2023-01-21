@@ -1,15 +1,15 @@
 - name: THIS IS PLAYBOOK
   hosts: 127.0.0.1
   tasks:
-    - name: Add Banner
-      cisco.ios.ios_banner: null
-      banner: login
-      text: |
-        ASDM THIS IS TEST BANNERR
-      state: present
-- name: Add loopback
-  cisco.ios.ios_interfaces: null
-  config:
-    - name: Loopback4
-      description: L4 Configured by Ansible
-      state: merged
+  - name: Add Banner
+    cisco.ios.ios_banner: null
+    banner: login
+    text: |
+      ASDM THIS IS TEST BANNERR
+    state: present
+  - name: Add loopback
+    cisco.ios.ios_interfaces: null
+    config:
+      - name: Loopback4
+        description: L4 Configured by Ansible
+        state: merged
