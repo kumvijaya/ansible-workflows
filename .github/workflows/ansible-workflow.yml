@@ -49,7 +49,7 @@ jobs:
 
       - name: Copy hosts file
         run: |
-          mkdir /etc/ansible
+          sudo mkdir /etc/ansible
           cp deploy/hosts /etc/ansible/hosts
 
       - name: Run ansible dry-run
