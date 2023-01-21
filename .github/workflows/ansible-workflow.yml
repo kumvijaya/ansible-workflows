@@ -34,7 +34,9 @@ jobs:
         run: |
           echo "List of yaml files changed"
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
-            if [ "$file" == "*.yml" ] || [ "$file" = "*.yaml" ]; then
+            ext="${file##*.}"
+            echo $file
+            if [ "$ext" == "*.yml" ] || [ "$ext" = "*.yaml" ]; then
               echo $file
             fi
           done
