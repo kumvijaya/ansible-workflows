@@ -26,25 +26,25 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: |
-            .(yaml|yml)$
-          #   *.yml
-          #   !.github
-          #   !*.md
+            !.github
+            !config/ansible-lint.yml
+            !*.md
 
       - name: Show modified files list
         run: |
-          echo "List of files changed"
+          echo "List of yaml files changed"
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
-            echo $file
+            if [ "$file" == "*.yml" ] || [ "$file" = "*.yaml" ] then
+              echo $file
+            fi
           done
 
       - name: Show modified files diffs
-        #if: steps.changed-files.outputs.any_modified == 'true'
-        run: git diff HEAD~1
-        #-- . ':(exclude).github' ':(exclude)*.md'
+        if: steps.changed-files.outputs.any_modified == 'true'
+        run: git diff HEAD~1 -- . ':(exclude).github' ':(exclude)*.md'
 
       - name: Run ansible lint
-        #if: steps.changed-files.outputs.any_modified == 'true'
+        if: steps.changed-files.outputs.any_modified == 'true'
         uses: ansible/ansible-lint-action@v6.10.2
 
       - name: Copy hosts file
@@ -54,4 +54,8 @@ jobs:
 
       - name: Run ansible dry-run
         run: |
-          ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_STDOUT_CALLBACK=yaml ansible-playbook deploy/devnet.yml --check -v
+          for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
+            if [ "$file" == "*.yml" ] || [ "$file" = "*.yaml" ] then
+              ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_STDOUT_CALLBACK=yaml ansible-playbook $file --check -v
+            fi
+            
