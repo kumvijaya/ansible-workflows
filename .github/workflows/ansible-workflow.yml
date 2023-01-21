@@ -26,7 +26,7 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: |
-            ([a-zA-Z0-9\s_\\.\-\(\):])+(.yaml|.yml)$
+            /([a-zA-Z0-9\s_\\.\-\(\):])+(.yaml|.yml)$
           #   *.yml
           #   !.github
           #   !*.md
