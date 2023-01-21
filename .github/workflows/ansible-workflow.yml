@@ -54,4 +54,4 @@ jobs:
 
       - name: Run ansible dry-run
         run: |
-          ANSIBLE_STDOUT_CALLBACK=yaml ansible-playbook deploy/devnet.yml --check -v
+          ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_STDOUT_CALLBACK=yaml ansible-playbook deploy/devnet.yml --check -v
