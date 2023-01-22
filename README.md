@@ -9,5 +9,24 @@ This repository keeps the [github action workflow](https://github.com/kumvijaya/
 - **Lint ansible files**: Lints the changed ansible playbook files using [ansible-lint-action](https://github.com/ansible/ansible-lint-action)
 - **Dry-run**: Dryrun the changed ansible playbook files. It uses [check/dryrun](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_checkmode.html#:~:text=In%20check%20mode%2C%20Ansible%20runs,before%2Dand%2Dafter%20comparisons) mode with [ansible CLI](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installation-guide)
 
+**Note**: 
+This uses the common config files from [ansible-config](https://github.com/kumvijaya/ansible-config)
+
+## Caller instructions
+The callers to call this workflow using below
+```
+name: Ansible CICD
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ansible-cicd:
+      uses: kumvijaya/ansible-workflows/.github/workflows/ansible-workflow.yml@main
+      secrets: inherit
+```
+
 Refer more details
 - [Reusing workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows)
