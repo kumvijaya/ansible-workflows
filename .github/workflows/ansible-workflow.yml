@@ -27,13 +27,8 @@ jobs:
         with:
           files: |
             !.github
-            !config/ansible-lint.yml
+            !.config
             !*.md
-
-      - if: steps.changed-files.outputs.any_changed == 'true'
-        run: |
-          sudo mkdir /etc/ansible
-          sudo cp deploy/hosts /etc/ansible/hosts
 
       - name: Show changed files
         if: steps.changed-files.outputs.any_changed == 'true'
@@ -56,6 +51,23 @@ jobs:
               git diff HEAD~1 $file
             fi
           done
+
+      - id: get_owner
+        shell: bash
+        run: echo "##[set-output name=owner;]$(echo ${GITHUB_REPOSITORY%/*})"
+        
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ steps.get_owner.outputs.owner }}/ansible-config
+          ref: main
+          path: ansible-config
+
+      - name: Set ansible config
+        run: |
+          sudo mkdir -p .config
+          sudo cp ansible-config/ansible-lint.yml .config/ansible-lint.yml
+          sudo mkdir /etc/ansible
+          sudo cp ansible-config/hosts /etc/ansible/hosts
 
       - name: Lint
         if: steps.changed-files.outputs.any_changed == 'true'
